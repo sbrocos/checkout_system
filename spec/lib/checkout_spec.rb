@@ -2,6 +2,7 @@
 
 require './spec/spec_helper'
 require './lib/checkout'
+require './lib/basket'
 require './lib/item'
 
 describe Checkout do
@@ -14,7 +15,7 @@ describe Checkout do
   describe '#scan' do
     it 'increment an element in basket' do
       checkout.scan tea
-      expect(checkout.basket).to eq [tea]
+      expect(checkout.basket.items).to eq [tea]
     end
   end
 
