@@ -3,8 +3,8 @@
 class Checkout
   attr_reader :basket
 
-  def initialize
-    @basket = Basket.new
+  def initialize(pricing_rules = nil)
+    @basket = Basket.new pricing_rules
   end
 
   def scan(item)
@@ -12,6 +12,6 @@ class Checkout
   end
 
   def total
-    basket.items.sum(&:price)
+    (basket.total - basket.total_discount).to_f
   end
 end

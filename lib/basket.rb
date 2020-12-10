@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require './lib/rules/pricing_rules'
 
 class Basket
@@ -19,14 +20,14 @@ class Basket
   end
 
   def total
-    items.sum(&:price)
+    items.sum(&:price).to_f
   end
 
   def total_discount
     return 0 if @rules.nil?
 
-    @rules.map do |rule|
-      Rules.public_send("#{rule[:name]}_rule", items_by_code(rule[:code]))
-    end.sum
+    @rules.sum do |rule|
+      Rules.public_send("#{rule[:name]}_rule", items_by_code(rule[:code])).to_f
+    end.to_f
   end
 end

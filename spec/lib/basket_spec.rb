@@ -4,7 +4,6 @@ require './spec/spec_helper'
 require './lib/basket'
 require './lib/item'
 
-
 RSpec.describe Basket do
   subject(:basket) { described_class.new }
 
@@ -56,7 +55,7 @@ RSpec.describe Basket do
 
   describe '#total_discount' do
     context 'without rules' do
-      subject(:basket) { described_class.new() }
+      subject(:basket) { described_class.new }
 
       it 'returns a float with sum of all items' do
         expect(basket.total_discount).to eq 0

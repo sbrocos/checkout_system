@@ -6,8 +6,15 @@ require './lib/basket'
 require './lib/item'
 
 describe Checkout do
-  subject(:checkout) { described_class.new }
+  subject(:checkout) { described_class.new(pricing_rules) }
 
+  let(:pricing_rules) do
+    [
+      { name: 'ceo', code: 'GR1' },
+      { name: 'coo', code: 'SR1' },
+      { name: 'cto', code: 'CF1' }
+    ]
+  end
   let(:tea) { Item.new 'GR1', 'Green tea', 3.11 }
   let(:strawberries) { Item.new 'SR1', 'Strawberries', 5.00 }
   let(:coffee) { Item.new 'CF1', 'Coffee', 11.23 }
