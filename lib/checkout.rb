@@ -12,6 +12,6 @@ class Checkout
   end
 
   def total
-    (basket.total - basket.total_discount).to_f
+    Numbers.currency(basket.total - basket.total_discount)
   end
 end

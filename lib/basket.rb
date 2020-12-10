@@ -20,14 +20,14 @@ class Basket
   end
 
   def total
-    items.sum(&:price).to_f
+    Numbers.currency(items.sum(&:price))
   end
 
   def total_discount
     return 0 if @rules.nil?
-
-    @rules.sum do |rule|
+    sum_item = @rules.sum do |rule|
       Rules.public_send("#{rule[:name]}_rule", items_by_code(rule[:code])).to_f
-    end.to_f
+    end
+    Numbers.currency(sum_item)
   end
 end
