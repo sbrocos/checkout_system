@@ -4,6 +4,7 @@ require './spec/spec_helper'
 require './lib/basket'
 require './lib/item'
 
+
 RSpec.describe Basket do
   subject(:basket) { described_class.new }
 
@@ -42,6 +43,37 @@ RSpec.describe Basket do
 
     it 'return an array with results' do
       expect(basket.items_by_code('GR1')).to eq [tea]
+    end
+  end
+
+  describe '#total' do
+    before { basket.add_item tea }
+
+    it 'returns a float with sum of all items' do
+      expect(basket.total).to eq 3.11
+    end
+  end
+
+  describe '#total_discount' do
+    context 'without rules' do
+      subject(:basket) { described_class.new() }
+
+      it 'returns a float with sum of all items' do
+        expect(basket.total_discount).to eq 0
+      end
+    end
+
+    context 'with rules' do
+      subject(:basket) { described_class.new([{ name: 'ceo', code: 'GR1' }]) }
+
+      before do
+        basket.add_item tea
+        basket.add_item tea
+      end
+
+      it 'returns a float with sum of all items' do
+        expect(basket.total_discount).to eq 3.11
+      end
     end
   end
 end
