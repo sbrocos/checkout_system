@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
-require './lib/rules/pricing_rules'
-require './lib/item'
 
 RSpec.describe Rules do
   describe '.ceo_rule' do

@@ -1,25 +1,54 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
-require './lib/checkout'
-require './lib/basket'
-require './lib/item'
 
-describe Checkout do
-  subject(:checkout) { described_class.new(pricing_rules) }
+RSpec.describe Checkout do
+  shared_context 'with correct data' do
+    subject(:checkout) { described_class.new(pricing_rules) }
 
-  let(:pricing_rules) do
-    [
-      { name: 'ceo', code: 'GR1' },
-      { name: 'coo', code: 'SR1' },
-      { name: 'cto', code: 'CF1' }
-    ]
+    let(:pricing_rules) do
+      [
+        { name: 'ceo', code: 'GR1' },
+        { name: 'coo', code: 'SR1' },
+        { name: 'cto', code: 'CF1' }
+      ]
+    end
+    let(:tea) { Item.new 'GR1', 'Green tea', 3.11 }
+    let(:strawberries) { Item.new 'SR1', 'Strawberries', 5.00 }
+    let(:coffee) { Item.new 'CF1', 'Coffee', 11.23 }
   end
-  let(:tea) { Item.new 'GR1', 'Green tea', 3.11 }
-  let(:strawberries) { Item.new 'SR1', 'Strawberries', 5.00 }
-  let(:coffee) { Item.new 'CF1', 'Coffee', 11.23 }
+
+  context 'with wrong rule by name' do
+    subject(:checkout) { described_class.new([{ name: 'cpo', code: 'SR1' }]) }
+
+    it 'returns a esception' do
+      expect { checkout }.to raise_error StandardError, "Don't exist this rule"
+    end
+  end
+
+  context 'with wrong format rule' do
+    subject(:checkout) { described_class.new(name: 'cpo', code: 'SR1') }
+
+    it 'returns a esception' do
+      expect { checkout }.to raise_error StandardError, 'Pricing rules is not an array'
+    end
+  end
+
+  context 'without rules' do
+    subject(:checkout) { described_class.new }
+
+    it { expect(checkout.class).to eq described_class }
+  end
+
+  context 'without empty rules' do
+    subject(:checkout) { described_class.new [] }
+
+    it { expect(checkout.class).to eq described_class }
+  end
 
   describe '#scan' do
+    include_context 'with correct data'
+
     it 'increment an element in basket' do
       checkout.scan tea
       expect(checkout.basket.items).to eq [tea]
@@ -27,6 +56,8 @@ describe Checkout do
   end
 
   describe '#total' do
+    include_context 'with correct data'
+
     context 'without pricing_rules' do
       before do
         checkout.scan tea

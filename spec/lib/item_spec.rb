@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
-require './lib/item'
 
 RSpec.describe Item do
   subject(:item) { described_class.new 'PR1', 'Product One', 2.00 }

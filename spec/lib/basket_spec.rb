@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require './spec/spec_helper'
-require './lib/basket'
-require './lib/item'
 
 RSpec.describe Basket do
   subject(:basket) { described_class.new }

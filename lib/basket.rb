@@ -25,6 +25,7 @@ class Basket
 
   def total_discount
     return 0 if @rules.nil?
+
     sum_item = @rules.sum do |rule|
       Rules.public_send("#{rule[:name]}_rule", items_by_code(rule[:code])).to_f
     end
